@@ -4,10 +4,9 @@ import {Create} from './Create';
 import {Delete} from './Delete';
 import {Update} from './Update';
 import {VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryPie} from 'victory';
-import {loadScreen} from './LoadScreen';
 import {Search} from './Search';
 
-
+//function component that returns a row header based on recieved props
 function CategoryRow(props) {
     return (
         <th>
@@ -15,7 +14,7 @@ function CategoryRow(props) {
         </th>
     );
 }
-
+//function component that returns a table row
 function DataRow(props) {
     var fields =[];
     for (const key in props.data) {
@@ -30,64 +29,65 @@ function DataRow(props) {
     );
 }
 
-//create a grid to list out each student: fname, lname, age, grade
+//table component, renders and controls all components associated with the table
 export class Table extends React.Component {
     constructor(props) {
         super(props);
         this.state = {data: this.props.data}
 
         this.handleData = this.handleData.bind(this);
-        this.calcChartData = this.calcChartData.bind(this);
-        this.calcPieData = this.calcPieData.bind(this);
+        this.getTicks = this.getTicks.bind(this);
+        this.calcDisplayData = this.calcDisplayData.bind(this);
     }
 
+    //function to update state data with a given object
     handleData(obj) {
         this.setState({data: obj});
     }
 
-    calcChartData() {
-        var chartData = [
-            {grade: 6, count: 0},
-            {grade: 7, count: 0},
-            {grade: 8, count: 0},
-            {grade: 9, count: 0},
-            {grade: 10, count: 0},
-            {grade: 11, count: 0},
-            {grade: 12, count: 0},
-        ]
+    //funtion that returns data for a chart based on a provided key
+    //reads the current data state and interprets a subset of that data to be used for charts
+    //for the data array, the x key value corresponds to the provided key parameter, the y key value is the count of how many x key matches have been found
+    calcDisplayData(key) {
+        var Data = []
+        //iterates through state data
+        //if the current item is the first item a data object is added to the array
+        //each item in the data array is compared to the current item to determine if the key values match
+        //if the items match the count of the data array object is incremented and the found item flag is set to true
+        //if the found item flag is not true, a new data object is added to the data array with a count of 1
         this.state.data.forEach((item) => {
-            var i;
-            for (i = 0; i < chartData.length; i++) {
-                if (chartData[i].grade == item.grade) {
-                    chartData[i].count++;
-                }
-            }
-        })
-
-        return chartData;
-    }
-
-    calcPieData() {
-        var pieData = []
-        this.state.data.forEach((item) => {
-            if (pieData.length == 0) {
-                pieData.push({age: item.age, count: 0});
-            }
             var foundItem = false;
-            for (var i = 0; i < pieData.length; i++) {
-                if (pieData[i].age === item.age) {
-                    pieData[i].count++;
+            if (Data.length == 0) {
+                Data.push({x: item[key], y: 0})
+            }
+            for (var i = 0; i < Data.length; i++) {
+                if (Data[i].x === item[key]) {
+                    Data[i].y++;
                     foundItem = true;
                 }
             }
-            if (!foundItem) {pieData.push({age: item.age, count: 1})}
+            if (!foundItem) {
+                Data.push({x: item[key], y: 1})
+            }
         })
-        return pieData;
+        //data array is sorted so it will display its smallest value first
+        Data.sort((a,b) => a.x - b.x);
+        return Data;
+    }
+
+    //function to return the labels for chart ticks
+    getTicks(data) {
+        var ticks = [];
+        data.forEach((item) => {
+            ticks.push(item.x + "th");
+        })
+        return ticks;
     }
 
     render() {
         var rows = [];
-        var keyRows = []
+        var keyRows = [];
+        //sets an array of key rows that will be used as table headers based on the current state data
         Object.keys(this.state.data[0]).forEach((key) => {
             keyRows.push(
                 <CategoryRow category={key} />
@@ -98,14 +98,20 @@ export class Table extends React.Component {
                 {keyRows}
             </tr>
         )
+        //sets each data row for the table based on the current state data
         this.state.data.forEach((item) => {
             rows.push(
                 <DataRow data={item} />
             )
         })
 
-        var chData = this.calcChartData();
-        var pieData = this.calcPieData();
+
+        var chartData = this.calcDisplayData("grade");
+        var ticks = this.getTicks(chartData);
+        var pieData = this.calcDisplayData("age");
+        //render all components for the table
+        //create update delete and search components are passed the handleData function
+        //update delete and search components are passed the current state data
         return (
             <React.Fragment>
                 <div class="col-3 createForm">
@@ -123,13 +129,13 @@ export class Table extends React.Component {
                 <div class="col-3 createForm">
                 <label>Grade Breakdown</label>
                     <VictoryChart theme={VictoryTheme.material} domainPadding={20}>
-                        <VictoryAxis tickValues={[6,7,8,9,10,11,12]} tickFormat={["6th", "7th", "8th", "9th", "10th", "11th", "12th"]} />
+                        <VictoryAxis tickValues={[6,7,8,9,10,11,12]} tickFormat={ticks} />
                         <VictoryAxis dependentAxis />
-                        <VictoryBar style={{data: {fill:"rgba(45, 241, 255, 0.938)"}}} data={chData} x="grade" y="count" />
+                        <VictoryBar style={{data: {fill:"rgba(45, 241, 255, 0.938)"}}} data={chartData} />
                     </VictoryChart>
                 <label>Age Breakdown</label>
                     <VictoryPie style={{ labels: { fill: "rgba(255, 255, 255, 0.849)" } }} colorScale={["rgba(196, 0, 196, 0.849)", "rgba(45, 241, 255, 0.938)", "rgba(241, 37, 48, 0.849)"]} 
-                    innerRadius={100} labelRadius={120} data={pieData} x="age" y="count" />
+                    innerRadius={100} labelRadius={120} data={pieData} />
                 </div>
             </React.Fragment>
         )

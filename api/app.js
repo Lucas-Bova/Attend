@@ -31,8 +31,5 @@ app.post('/search', (req, res) => {
     dbcalls.search(req, res);
 })
 
-
 app.listen(port, () => console.log('server listening on port ' + port)
 );
-
-//http://127.0.0.1:8080/
