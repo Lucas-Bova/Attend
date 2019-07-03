@@ -1,12 +1,8 @@
-var express = require('express');
-var app = express();
-var cors = require("cors");
 var mysql = require('mysql');
-var bodyPasrser = require('body-parser');
 
-app.use(cors());
-app.use(bodyPasrser.json());
-
+//connection pool with all DB connection details
+//must have an .env file in the root folder with each item as shown below
+//for example: DB_HOST=MyHostIP
 var pool = mysql.createPool({
     connectionLimit: 10,
     host: process.env.DB_HOST,
@@ -15,6 +11,10 @@ var pool = mysql.createPool({
     database: process.env.DB_DATABASE
 })
 
+//function to search the DB based on request body parameters
+//first establishes a connection from the connection pool
+//queries the DB, releases the connection, and sends the results via the provided res object
+//needs more/better error handling
 exports.search = (req, res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;
@@ -27,6 +27,10 @@ exports.search = (req, res) => {
     })
 }
 
+//function to read all records from the db 
+//establishes a connectin from the connection pool
+//queries the DB, releases the connection, and sends the results via the provided res object
+//needs more/better error handling
 exports.readAll = (res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;
@@ -39,6 +43,10 @@ exports.readAll = (res) => {
     });
 }
 
+//function to add a new entry to the db based on request body parameters
+//establishes a connectin from the connection pool
+//queries the DB, releases the connection, and sends the results via the provided res object
+//needs more/better error handling
 exports.create = (req, res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;
@@ -51,6 +59,10 @@ exports.create = (req, res) => {
     });
 }
 
+//function to delete an entry from the db based on a request body id
+//establishes a connectin from the connection pool
+//queries the DB, releases the connection, and sends the results via the provided res object
+//needs more/better error handling
 exports.delete = (req, res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;
@@ -66,6 +78,10 @@ exports.delete = (req, res) => {
     });
 }
 
+//function to update an entry in the db based on request body parameters
+//establishes a connectin from the connection pool
+//queries the DB, releases the connection, and sends the results via the provided res object
+//needs more/better error handling
 exports.update = (req, res) => {
     pool.getConnection((err, con) => {
         if (err) throw err;

@@ -17,7 +17,7 @@ class App extends React.Component {
     this.getData();
   }
 
-  //make call to local api to get all data from the DB
+  //make call to local api to get all data from DB
   getData() {
       //make api call
       var url = new URL("http://localhost:8080/read")

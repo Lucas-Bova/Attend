@@ -127,13 +127,13 @@ export class Table extends React.Component {
                     <tbody>{rows}</tbody>
                 </table>
                 <div class="col-3 createForm">
-                <label>Grade Breakdown</label>
+                    <label>Grade Breakdown</label>
                     <VictoryChart theme={VictoryTheme.material} domainPadding={20}>
                         <VictoryAxis tickValues={[6,7,8,9,10,11,12]} tickFormat={ticks} />
                         <VictoryAxis dependentAxis />
                         <VictoryBar style={{data: {fill:"rgba(45, 241, 255, 0.938)"}}} data={chartData} />
                     </VictoryChart>
-                <label>Age Breakdown</label>
+                    <label>Age Breakdown</label>
                     <VictoryPie style={{ labels: { fill: "rgba(255, 255, 255, 0.849)" } }} colorScale={["rgba(196, 0, 196, 0.849)", "rgba(45, 241, 255, 0.938)", "rgba(241, 37, 48, 0.849)"]} 
                     innerRadius={100} labelRadius={120} data={pieData} />
                 </div>

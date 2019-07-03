@@ -4,7 +4,6 @@ var port = 8080;
 var cors = require("cors");
 var bodyPasrser = require('body-parser');
 require('dotenv').config();
-
 var dbcalls = require('./dbcalls')
 
 app.use(cors());
@@ -27,7 +26,6 @@ app.put('/update', (req, res) => {
 });
 
 app.post('/search', (req, res) => {
-    console.log("reached search endpoint")
     dbcalls.search(req, res);
 })
 

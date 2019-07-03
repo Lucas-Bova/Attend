@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 
+//delete component, contains logic to delete an entry from the db
 export class Delete extends React.Component {
     constructor(props) {
         super(props);
@@ -10,10 +11,13 @@ export class Delete extends React.Component {
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
+    //handles changes to id entry field
     onChangeHandler(event) {
         this.setState({id: event.target.value});
     }
 
+    //calls the api to delete a record from the db based on the current state id
+    //returns an updated data set to the props.handleData function
     onSubmitHandler(event) {
         //make api call
         var url = new URL("http://localhost:8080/delete")
@@ -34,6 +38,7 @@ export class Delete extends React.Component {
     }
 
     render() {
+        //gets a list of all ids from the data set and adds them to an array of option components
         var options = [];
         this.props.data.forEach((item) => {
             options.push(

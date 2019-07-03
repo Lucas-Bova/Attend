@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 
+//search component, contains the logic to search the current set of data
 export class Search extends React.Component {
     constructor(props) {
         super(props);
@@ -10,10 +11,14 @@ export class Search extends React.Component {
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
+    //handles changes to input fields
+    //if event name is category the change is applied to the category state, else the change is applied to the search state
     onChangeHandler(event) {
         event.target.name == 'category' ? this.setState({category: event.target.value}) : this.setState({search: event.target.value});
     }
 
+    //call api to return data based on search parameters
+    //calls the props.handleData function to return a new set of data to the table component
     onSubmitHandler(event) {
         //make api call
         var url = new URL("http://localhost:8080/search")

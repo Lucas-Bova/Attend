@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 
+//unused Auth comonent, eventually will be used to authenticate users
 export class Auth extends React.Component {
     constructor(props) {
         super(props);

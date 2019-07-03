@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 
+//Update component, contains logic to update an entry in the database
 export class Update extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +11,8 @@ export class Update extends React.Component {
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
+    //handles changes to input fields
+    //switch that changes a specific state based on the event name
     onChangeHandler(event) {
         switch(event.target.name) {
             case 'category':
@@ -24,6 +27,8 @@ export class Update extends React.Component {
         }
     }
 
+    //calls api to update an entry based on a specific id, category and value
+    //returns an updated record result to the props.handleData function
     onSubmitHandler(event) {
         //make api call
         var url = new URL("http://localhost:8080/update")
@@ -46,6 +51,7 @@ export class Update extends React.Component {
     }
 
     render() {
+        //gets a list of all ids from the data set and adds them to an array of option components
         var options = [];
         this.props.data.forEach((item) => {
             options.push(
