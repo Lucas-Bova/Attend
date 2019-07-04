@@ -34,8 +34,7 @@ export class Create extends React.Component {
     //returns an updated set of data to include the new data to the props.handleData function
     onSubmitHandler(event) {
         //make api call
-        var url = new URL("http://localhost:8080/create")
-        fetch(url, {
+        fetch("/create", {
         method: 'POST',
         headers: {
             'Content-Type': 'Application/json',

@@ -12,7 +12,6 @@ export class LoadScreen extends React.Component {
             <React.Fragment>
                 <div class = "loader">
                 </div>
-                <p class = "loadText"> Loading Data</p>
             </React.Fragment>
         )
     }

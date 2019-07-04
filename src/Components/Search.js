@@ -21,8 +21,7 @@ export class Search extends React.Component {
     //calls the props.handleData function to return a new set of data to the table component
     onSubmitHandler(event) {
         //make api call
-        var url = new URL("http://localhost:8080/search")
-        fetch(url, {
+        fetch("/search", {
         method: 'POST',
         headers: {
             'Content-Type': 'Application/json',

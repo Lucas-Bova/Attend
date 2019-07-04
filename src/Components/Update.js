@@ -31,8 +31,7 @@ export class Update extends React.Component {
     //returns an updated record result to the props.handleData function
     onSubmitHandler(event) {
         //make api call
-        var url = new URL("http://localhost:8080/update")
-        fetch(url, {
+        fetch("/update", {
         method: 'PUT',
         headers: {
             'Content-Type': 'Application/json',

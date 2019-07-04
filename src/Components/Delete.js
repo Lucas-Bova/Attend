@@ -20,8 +20,7 @@ export class Delete extends React.Component {
     //returns an updated data set to the props.handleData function
     onSubmitHandler(event) {
         //make api call
-        var url = new URL("http://localhost:8080/delete")
-        fetch(url, {
+        fetch("/delete", {
         method: 'DELETE',
         headers: {
             'Content-Type': 'Application/json',
