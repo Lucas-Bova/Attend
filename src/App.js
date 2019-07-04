@@ -20,8 +20,7 @@ class App extends React.Component {
   //make call to local api to get all data from DB
   getData() {
       //make api call
-      var url = new URL("http://localhost:8080/read")
-      fetch(url, {
+      fetch("/read", {
         method: 'GET',
       })
       .then(res => res.json())
