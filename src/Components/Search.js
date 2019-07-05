@@ -20,22 +20,26 @@ export class Search extends React.Component {
     //call api to return data based on search parameters
     //calls the props.handleData function to return a new set of data to the table component
     onSubmitHandler(event) {
-        //make api call
-        fetch("/search", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'Application/json',
-        },
-        body: JSON.stringify({
-            category: this.state.category,
-            equals: this.state.search
-        })
-        })
-        .then(res => res.json())
-        .then(res => this.props.handleData(res))
-        .catch(err => err);
-        event.preventDefault();
-        this.setState({search: ''})
+        if (!this.state.search) {
+            alert("please enter search parameter");
+        } else {
+            //make api call
+            fetch("/search", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/json',
+            },
+            body: JSON.stringify({
+                category: this.state.category,
+                equals: this.state.search
+            })
+            })
+            .then(res => res.json())
+            .then(res => this.props.handleData(res))
+            .catch(err => err);
+            event.preventDefault();
+            this.setState({search: ''})
+        }
     }
 
     render() {
